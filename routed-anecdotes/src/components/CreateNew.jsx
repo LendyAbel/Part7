@@ -11,12 +11,12 @@ const CreateNew = ({ addNew, showNotification }) => {
   const handleSubmit = e => {
     e.preventDefault()
     addNew({
-      content: content.value,
-      author: author.value,
-      info: info.value,
+      content: content.inputsProps.value,
+      author: author.inputsProps.value,
+      info: info.inputsProps.value,
       votes: 0,
     })
-    showNotification(`a new anecdote: "${content.value}" created!`)
+    showNotification(`a new anecdote: "${content.inputsProps.value}" created!`)
     navigate('/')
   }
 
@@ -32,15 +32,15 @@ const CreateNew = ({ addNew, showNotification }) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' {...content} />
+          <input name='content' {...content.inputsProps} />
         </div>
         <div>
           author
-          <input name='author' {...author} />
+          <input name='author' {...author.inputsProps} />
         </div>
         <div>
           url for more info
-          <input name='info' {...info} />
+          <input name='info' {...info.inputsProps} />
         </div>
         <button type='submit'>create</button>
         <button type='button' onClick={handleReset}>reset</button>
