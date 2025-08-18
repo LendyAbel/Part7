@@ -29,20 +29,20 @@ const Blog = ({ blog, updateLikes, deleteBlog, userLoggedId }) => {
 
   return (
     <div style={blogStyle}>
-      <div className='defalutContainer'>
-        <p id='defaultInfo'>
+      <div className="defalutContainer">
+        <p id="defaultInfo">
           Title: {blog.title} Author: {blog.author}{' '}
-          <button onClick={toggleVisibility} id='toggleButton'>
+          <button onClick={toggleVisibility} id="toggleButton">
             {visible ? 'hide' : 'view'}
           </button>
         </p>
       </div>
       {visible ? (
-        <div className='moreInfoContainer'>
-          <p id='urlInfo'>URL: {blog.url}</p>
-          <p id='likesInfo'>
+        <div className="moreInfoContainer">
+          <p id="urlInfo">URL: {blog.url}</p>
+          <p id="likesInfo">
             likes: {blog.likes}{' '}
-            <button onClick={() => updateLikes(blog.id)} id='likeButton'>
+            <button onClick={() => updateLikes(blog.id)} id="likeButton">
               like
             </button>
           </p>

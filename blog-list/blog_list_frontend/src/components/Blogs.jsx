@@ -5,8 +5,8 @@ const Blogs = ({ blogs, updateLikes, deleteBlog, userLoggedId }) => {
 
   return (
     <div>
-      <h2 className='subtitle'>Blogs</h2>
-      {sortedBlogs.map(blog => (
+      <h2 className="subtitle">Blogs</h2>
+      {sortedBlogs.map((blog) => (
         <Blog
           key={blog.id}
           blog={blog}

@@ -61,7 +61,7 @@ const App = () => {
     showNotification('Logout sucefully')
   }
 
-  const addBlog = async newBlog => {
+  const addBlog = async (newBlog) => {
     try {
       const returnedBlog = await blogService.createBlog(newBlog)
       setBlogs(blogs.concat(returnedBlog))
@@ -75,14 +75,18 @@ const App = () => {
     }
   }
 
-  const updateLikes = async id => {
+  const updateLikes = async (id) => {
     try {
-      const blog = blogs.find(blog => blog.id === id)
-      const updatedBlog = { ...blog, user: blog.user.id, likes: blog.likes + 1 }
+      const blog = blogs.find((blog) => blog.id === id)
+      const updatedBlog = {
+        ...blog,
+        user: blog.user.id,
+        likes: blog.likes + 1,
+      }
       const returnedBlog = await blogService.updateBlog(id, updatedBlog)
 
       setBlogs(
-        blogs.map(blog =>
+        blogs.map((blog) =>
           blog.id !== id ? blog : { ...returnedBlog, user: blog.user }
         )
       )
@@ -91,10 +95,10 @@ const App = () => {
     }
   }
 
-  const deleteBlog = async id => {
+  const deleteBlog = async (id) => {
     try {
       await blogService.deleteBlog(id)
-      setBlogs(blogs.filter(blog => blog.id !== id))
+      setBlogs(blogs.filter((blog) => blog.id !== id))
       showNotification('Blog deleted')
       console.log(`BLOG WITH ID: ${id} DELETED`)
     } catch (error) {
@@ -115,7 +119,7 @@ const App = () => {
             <button onClick={logoutHandler}>Logout</button>
           </p>
           <ToggleVisibility
-            buttonLabel='Create new blog'
+            buttonLabel="Create new blog"
             ref={createBlogFormRef}
           >
             <Post addBlog={addBlog} />

@@ -30,7 +30,7 @@ const ToggleVisibility = forwardRef((props, ref) => {
 })
 
 ToggleVisibility.propTypes = {
-  buttonLabel: PropTypes.string.isRequired
+  buttonLabel: PropTypes.string.isRequired,
 }
 
 ToggleVisibility.displayName = 'ToggleVisibility'

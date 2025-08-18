@@ -5,16 +5,16 @@ const Post = ({ addBlog }) => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const handlerTitleChange = event => {
+  const handlerTitleChange = (event) => {
     setTitle(event.target.value)
   }
-  const handlerAuthorChange = event => {
+  const handlerAuthorChange = (event) => {
     setAuthor(event.target.value)
   }
-  const handlerUrlChange = event => {
+  const handlerUrlChange = (event) => {
     setUrl(event.target.value)
   }
-  const postNewBlogHandler = event => {
+  const postNewBlogHandler = (event) => {
     event.preventDefault()
     const newBlog = {
       title,
@@ -29,14 +29,14 @@ const Post = ({ addBlog }) => {
 
   return (
     <div>
-      <h2 className='subtitle'>Create new blog</h2>
+      <h2 className="subtitle">Create new blog</h2>
       <form onSubmit={postNewBlogHandler}>
         <div>
           Title:{' '}
           <input
-            id='titleInput'
-            type='text'
-            name='title'
+            id="titleInput"
+            type="text"
+            name="title"
             value={title}
             onChange={handlerTitleChange}
           />
@@ -44,9 +44,9 @@ const Post = ({ addBlog }) => {
         <div>
           Author:{' '}
           <input
-            id='authorInput'
-            type='text'
-            name='author'
+            id="authorInput"
+            type="text"
+            name="author"
             value={author}
             onChange={handlerAuthorChange}
           />
@@ -54,15 +54,15 @@ const Post = ({ addBlog }) => {
         <div>
           Url:{' '}
           <input
-            id='urlInput'
-            type='text'
-            name='url'
+            id="urlInput"
+            type="text"
+            name="url"
             value={url}
             onChange={handlerUrlChange}
           />
         </div>
 
-        <button type='submit'>Create</button>
+        <button type="submit">Create</button>
       </form>
     </div>
   )

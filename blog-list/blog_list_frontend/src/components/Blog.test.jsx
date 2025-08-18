@@ -43,8 +43,8 @@ test("render blogs'url and likes when button show are clicked", async () => {
   expect(likesElement).toBeDefined()
 })
 
-test('button like clicked twice', async() => {
-    const blog = {
+test('button like clicked twice', async () => {
+  const blog = {
     title: 'Prueba de renderizado',
     author: 'Lendy',
     url: 'http://prueba',
@@ -52,7 +52,9 @@ test('button like clicked twice', async() => {
     user: { name: 'Usuario Test' },
   }
   const mockHandler = vi.fn()
-  const container = render(<Blog blog={blog} updateLikes={mockHandler} />).container
+  const container = render(
+    <Blog blog={blog} updateLikes={mockHandler} />
+  ).container
 
   const user = userEvent.setup()
   const buttonToggle = container.querySelector('#toggleButton')

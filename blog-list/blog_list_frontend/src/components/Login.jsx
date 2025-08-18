@@ -4,15 +4,15 @@ const Login = ({ login }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const handlerUsernameChange = event => {
+  const handlerUsernameChange = (event) => {
     setUsername(event.target.value)
   }
 
-  const handlerPasswordChange = event => {
+  const handlerPasswordChange = (event) => {
     setPassword(event.target.value)
   }
 
-  const loginHandler = event => {
+  const loginHandler = (event) => {
     event.preventDefault()
     login({ username, password })
     setUsername('')
@@ -21,26 +21,26 @@ const Login = ({ login }) => {
 
   return (
     <form onSubmit={loginHandler}>
-      <h2 className='subtitle'>Login</h2>
+      <h2 className="subtitle">Login</h2>
       <div>
         username:{' '}
         <input
-          type='text'
+          type="text"
           value={username}
-          name='Username'
+          name="Username"
           onChange={handlerUsernameChange}
         />
       </div>
       <div>
         password:{' '}
         <input
-          type='password'
+          type="password"
           value={password}
-          name='Password'
+          name="Password"
           onChange={handlerPasswordChange}
         />
       </div>
-      <button type='submit'>login</button>
+      <button type="submit">login</button>
     </form>
   )
 }
