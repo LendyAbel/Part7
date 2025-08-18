@@ -1,0 +1,32 @@
+{
+  "name": "blog_list_backend",
+  "version": "1.0.0",
+  "description": "A blog list",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development node --watch index.js",
+    "test": "cross-env  NODE_ENV=test node --test",
+    "test-only": "cross-env NODE_ENV=test node --test --test-only tests/blogs_api.test.js",
+    "start:test": "cross-env NODE_ENV=test node --watch index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "json-server": "^1.0.0-beta.3",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "mongoose": "^8.14.3",
+    "nanoid": "^5.1.5"
+  },
+  "devDependencies": {
+    "eslint": "^9.26.0",
+    "prettier": "^3.5.3",
+    "supertest": "^7.1.1"
+  }
+}
