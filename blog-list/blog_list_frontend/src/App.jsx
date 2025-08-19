@@ -7,11 +7,14 @@ import ToggleVisibility from './components/ToggleVisibility'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+import { useDispatch } from 'react-redux'
+import { showNotification } from './reducers/notificationReducer'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState('')
-  const [error, setError] = useState('false')
+
+  const dispatch = useDispatch()
 
   const createBlogFormRef = useRef()
 
@@ -33,24 +36,16 @@ const App = () => {
     setBlogs(blogs)
   }
 
-  const showNotification = (message, isError = false) => {
-    setError(isError)
-    setMessage(message)
-    setTimeout(() => {
-      setMessage('')
-    }, 5000)
-  }
-
   const loginHandler = async ({ username, password }) => {
     try {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem('loggedBlogsappUser', JSON.stringify(user))
       setUser(user)
       blogService.setToken(user.token)
-      showNotification('Loggin succefully')
+      dispatch(showNotification('Loggin succefully'))
       console.log('Logging in with', username, password)
     } catch (error) {
-      showNotification('Wrong credentials', true)
+      dispatch(showNotification('Wrong credentials', true))
       console.log('Wrong Credentials')
     }
   }
@@ -58,7 +53,7 @@ const App = () => {
   const logoutHandler = () => {
     setUser(null)
     window.localStorage.removeItem('loggedBlogsappUser')
-    showNotification('Logout sucefully')
+    dispatch(showNotification('Logout sucefully'))
   }
 
   const addBlog = async (newBlog) => {
@@ -66,12 +61,14 @@ const App = () => {
       const returnedBlog = await blogService.createBlog(newBlog)
       setBlogs(blogs.concat(returnedBlog))
       createBlogFormRef.current.toggleVisibility()
-      showNotification(
-        `New blog added: ${returnedBlog.title} ${returnedBlog.author}`
+      dispatch(
+        showNotification(
+          `New blog added: ${returnedBlog.title} ${returnedBlog.author}`
+        )
       )
     } catch (error) {
       console.log(error)
-      showNotification('Blog could not be added', true)
+      dispatch(showNotification('Blog could not be added', true))
     }
   }
 
@@ -108,8 +105,7 @@ const App = () => {
 
   return (
     <div>
-      {message && <Notification message={message} error={error} />}
-
+      <Notification />
       {user === null ? (
         <Login login={loginHandler} />
       ) : (
