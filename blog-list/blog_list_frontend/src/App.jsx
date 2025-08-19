@@ -43,7 +43,6 @@ const App = () => {
       setUser(user)
       blogService.setToken(user.token)
       dispatch(showNotification('Loggin succefully'))
-      console.log('Logging in with', username, password)
     } catch (error) {
       dispatch(showNotification('Wrong credentials', true))
       console.log('Wrong Credentials')
