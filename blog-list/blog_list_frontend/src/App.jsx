@@ -9,6 +9,7 @@ import loginService from './services/login'
 
 import { useDispatch } from 'react-redux'
 import { showNotification } from './reducers/notificationReducer'
+import { initializeBlogs } from './reducers/blogsReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -17,6 +18,10 @@ const App = () => {
   const dispatch = useDispatch()
 
   const createBlogFormRef = useRef()
+
+  useEffect(() => {
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     getBlogs()
@@ -122,7 +127,6 @@ const App = () => {
         </div>
       )}
       <Blogs
-        blogs={blogs}
         updateLikes={updateLikes}
         deleteBlog={deleteBlog}
         userLoggedId={user?.id}
