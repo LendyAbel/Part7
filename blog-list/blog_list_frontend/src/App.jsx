@@ -7,10 +7,10 @@ import ToggleVisibility from './components/ToggleVisibility'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { showNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogsReducer'
-import { setSignedUser } from './reducers/userSignedReducer'
+import { clearSignedUser, setSignedUser } from './reducers/userSignedReducer'
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -38,6 +38,7 @@ const App = () => {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem('loggedBlogsappUser', JSON.stringify(user))
       setUser(user)
+      dispatch(setSignedUser(user))
       blogService.setToken(user.token)
       dispatch(showNotification('Loggin succefully'))
     } catch (error) {
@@ -48,6 +49,7 @@ const App = () => {
 
   const logoutHandler = () => {
     setUser(null)
+    dispatch(clearSignedUser())
     window.localStorage.removeItem('loggedBlogsappUser')
     dispatch(showNotification('Logout sucefully'))
   }
