@@ -20,10 +20,15 @@ export const blogsReducer = createSlice({
         blog.id !== updatedBlog.id ? blog : updatedBlog
       )
     },
+    eliminateBlog(state, action) {
+      const id = action.payload
+      return state.filter((blog) => blog.id !== id)
+    },
   },
 })
 
-export const { setBlogs, addBlog, updateBlog } = blogsReducer.actions
+export const { setBlogs, addBlog, updateBlog, eliminateBlog } =
+  blogsReducer.actions
 
 export const initializeBlogs = () => {
   return async (dispatch) => {
@@ -59,6 +64,20 @@ export const updateLikes = (id) => {
       dispatch(updateBlog({ ...returnedBlog, user: blog.user }))
     } catch (error) {
       console.log('ERROR: ', error)
+    }
+  }
+}
+
+export const deleteBlog = (id) => {
+  return async (dispatch) => {
+    try {
+      await blogService.deleteBlog(id)
+      dispatch(eliminateBlog(id))
+      dispatch(showNotification('Blog deleted'))
+    } catch (error) {
+      dispatch(
+        showNotification('Ups! Something happend. We couldn´t delete the blog')
+      )
     }
   }
 }

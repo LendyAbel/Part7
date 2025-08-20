@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { updateLikes } from '../reducers/blogsReducer'
+import { updateLikes, deleteBlog } from '../reducers/blogsReducer'
 
-const Blog = ({ blog, deleteBlog, userLoggedId }) => {
+const Blog = ({ blog, userLoggedId }) => {
   const [visible, setVisible] = useState(false)
   const dispatch = useDispatch()
 
@@ -12,7 +12,7 @@ const Blog = ({ blog, deleteBlog, userLoggedId }) => {
 
   const handleRemove = () => {
     if (window.confirm(`Remove blog Name: ${blog.title} by ${blog.author}`)) {
-      deleteBlog(blog.id)
+      dispatch(deleteBlog(blog.id))
     }
   }
 
