@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { updateLikes, deleteBlog } from '../reducers/blogsReducer'
 
-const Blog = ({ blog, userLoggedId }) => {
+const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
+  const userLoggedId = useSelector((state) => state.userSigned.id)
   const dispatch = useDispatch()
 
   const toggleVisibility = () => {
@@ -53,7 +54,7 @@ const Blog = ({ blog, userLoggedId }) => {
             </button>
           </p>
           <p>{blog.user.name}</p>
-          {userLoggedId === blog.user || blog.user.id ? (
+          {userLoggedId === blog.user || userLoggedId === blog.user.id ? (
             <button style={removeButtonStyle} onClick={handleRemove}>
               remove
             </button>

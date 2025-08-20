@@ -7,6 +7,6 @@ export default configureStore({
   reducer: {
     notification: notificationReducer,
     blogs: blogsReducer,
-    userSigned: userSignedReducer
+    userSigned: userSignedReducer,
   },
 })

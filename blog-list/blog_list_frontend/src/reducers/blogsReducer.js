@@ -75,9 +75,7 @@ export const deleteBlog = (id) => {
       dispatch(eliminateBlog(id))
       dispatch(showNotification('Blog deleted'))
     } catch (error) {
-      dispatch(
-        showNotification('Ups! Something happend. We couldn´t delete the blog')
-      )
+      dispatch(showNotification(`Error: ${error.response.data.error}`, true))
     }
   }
 }

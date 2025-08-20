@@ -13,10 +13,8 @@ import { initializeBlogs } from './reducers/blogsReducer'
 import { clearSignedUser, setSignedUser } from './reducers/userSignedReducer'
 
 const App = () => {
-  const [user, setUser] = useState(null)
-
+  const user = useSelector((state) => state.userSigned)
   const dispatch = useDispatch()
-
   const createBlogFormRef = useRef()
 
   useEffect(() => {
@@ -26,20 +24,21 @@ const App = () => {
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogsappUser')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      dispatch(setSignedUser(user))
-      blogService.setToken(user.token)
+      const userLogged = JSON.parse(loggedUserJSON)
+      dispatch(setSignedUser(userLogged))
+      blogService.setToken(userLogged.token)
     }
   }, [dispatch])
 
   const loginHandler = async ({ username, password }) => {
     try {
-      const user = await loginService.login({ username, password })
-      window.localStorage.setItem('loggedBlogsappUser', JSON.stringify(user))
-      setUser(user)
-      dispatch(setSignedUser(user))
-      blogService.setToken(user.token)
+      const userLogged = await loginService.login({ username, password })
+      window.localStorage.setItem(
+        'loggedBlogsappUser',
+        JSON.stringify(userLogged)
+      )
+      dispatch(setSignedUser(userLogged))
+      blogService.setToken(userLogged.token)
       dispatch(showNotification('Loggin succefully'))
     } catch (error) {
       dispatch(showNotification('Wrong credentials', true))
@@ -48,7 +47,6 @@ const App = () => {
   }
 
   const logoutHandler = () => {
-    setUser(null)
     dispatch(clearSignedUser())
     window.localStorage.removeItem('loggedBlogsappUser')
     dispatch(showNotification('Logout sucefully'))
@@ -77,7 +75,7 @@ const App = () => {
           </ToggleVisibility>
         </div>
       )}
-      <Blogs userLoggedId={user?.id} />
+      <Blogs />
     </div>
   )
 }
