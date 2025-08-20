@@ -9,22 +9,12 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 
 import { NotificationContext } from './context/NotificationContext'
-import { useQuery } from '@tanstack/react-query'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const { notification, showNotification } = useContext(NotificationContext)
   const createBlogFormRef = useRef()
-
-  const result = useQuery({
-    queryKey: ['blogs'],
-    queryFn: blogService.getAll,
-    retry: false,
-  })
-
-  console.log('result.data', result.data)
-
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogsappUser')
@@ -99,7 +89,6 @@ const App = () => {
       console.log(error.response.data.error)
     }
   }
-  const queryBlogs = result.data
 
   return (
     <div>
@@ -122,7 +111,6 @@ const App = () => {
         </div>
       )}
       <Blogs
-        blogs={queryBlogs}
         updateLikes={updateLikes}
         deleteBlog={deleteBlog}
         userLoggedId={user?.id}

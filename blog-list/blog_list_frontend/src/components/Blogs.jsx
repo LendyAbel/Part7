@@ -1,7 +1,16 @@
+import { useQuery } from '@tanstack/react-query'
 import Blog from './Blog'
+import blogService from '../services/blogs'
 
-const Blogs = ({ blogs, updateLikes, deleteBlog, userLoggedId }) => {
-  const sortedBlogs = blogs?.sort((a, b) => b.likes - a.likes)
+const Blogs = ({ updateLikes, deleteBlog, userLoggedId }) => {
+  const result = useQuery({
+    queryKey: ['blogs'],
+    queryFn: blogService.getAll,
+    retry: false,
+  })
+  console.log('result.data', result.data)
+
+  const sortedBlogs = result.data?.sort((a, b) => b.likes - a.likes)
 
   return (
     <div>
