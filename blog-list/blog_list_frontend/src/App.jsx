@@ -24,10 +24,6 @@ const App = () => {
   }, [dispatch])
 
   useEffect(() => {
-    getBlogs()
-  }, [])
-
-  useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogsappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
@@ -35,11 +31,6 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-
-  const getBlogs = async () => {
-    const blogs = await blogService.getAll()
-    setBlogs(blogs)
-  }
 
   const loginHandler = async ({ username, password }) => {
     try {
@@ -60,22 +51,9 @@ const App = () => {
     dispatch(showNotification('Logout sucefully'))
   }
 
-  const addBlog = async (newBlog) => {
-    try {
-      const returnedBlog = await blogService.createBlog(newBlog)
-      setBlogs(blogs.concat(returnedBlog))
-      createBlogFormRef.current.toggleVisibility()
-      dispatch(
-        showNotification(
-          `New blog added: ${returnedBlog.title} ${returnedBlog.author}`
-        )
-      )
-    } catch (error) {
-      console.log(error)
-      dispatch(showNotification('Blog could not be added', true))
-    }
+  const toggleVisibility = () => {
+    createBlogFormRef.current.toggleVisibility()
   }
-
   const updateLikes = async (id) => {
     try {
       const blog = blogs.find((blog) => blog.id === id)
@@ -122,7 +100,7 @@ const App = () => {
             buttonLabel="Create new blog"
             ref={createBlogFormRef}
           >
-            <Post addBlog={addBlog} />
+            <Post toggleVisibility={toggleVisibility} />
           </ToggleVisibility>
         </div>
       )}

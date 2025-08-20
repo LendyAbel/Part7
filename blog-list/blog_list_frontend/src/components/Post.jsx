@@ -1,27 +1,18 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createNewBlog } from '../reducers/blogsReducer'
 
-const Post = ({ addBlog }) => {
+const Post = ({ toggleVisibility }) => {
+  const dispatch = useDispatch()
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const handlerTitleChange = (event) => {
-    setTitle(event.target.value)
-  }
-  const handlerAuthorChange = (event) => {
-    setAuthor(event.target.value)
-  }
-  const handlerUrlChange = (event) => {
-    setUrl(event.target.value)
-  }
   const postNewBlogHandler = (event) => {
     event.preventDefault()
-    const newBlog = {
-      title,
-      author,
-      url,
-    }
-    addBlog(newBlog)
+    const newBlog = { title, author, url }
+    dispatch(createNewBlog(newBlog))
+    toggleVisibility()
     setTitle('')
     setAuthor('')
     setUrl('')
@@ -38,7 +29,7 @@ const Post = ({ addBlog }) => {
             type="text"
             name="title"
             value={title}
-            onChange={handlerTitleChange}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <div>
@@ -48,7 +39,7 @@ const Post = ({ addBlog }) => {
             type="text"
             name="author"
             value={author}
-            onChange={handlerAuthorChange}
+            onChange={(e) => setAuthor(e.target.value)}
           />
         </div>
         <div>
@@ -58,7 +49,9 @@ const Post = ({ addBlog }) => {
             type="text"
             name="url"
             value={url}
-            onChange={handlerUrlChange}
+            onChange={(e) => {
+              setUrl(e.target.value)
+            }}
           />
         </div>
 
