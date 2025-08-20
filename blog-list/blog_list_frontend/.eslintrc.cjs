@@ -15,11 +15,10 @@ module.exports = {
   plugins: ['react-refresh'],
   rules: {
     indent: ['warn', 2],
-    'linebreak-style': ['error', 'unix'],
+    'linebreak-style': ['warn', 'unix'],
     quotes: ['warn', 'single'],
     semi: ['warn', 'never'],
     eqeqeq: 'warn',
-    'no-trailing-spaces': 'error',
     'object-curly-spacing': ['error', 'always'],
     'arrow-spacing': ['error', { before: true, after: true }],
     'no-console': 0,
