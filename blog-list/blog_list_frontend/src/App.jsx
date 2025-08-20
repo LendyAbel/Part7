@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+
 import Notification from './components/Notification'
 import Blogs from './components/Blogs'
 import Login from './components/Login'
@@ -7,11 +8,17 @@ import ToggleVisibility from './components/ToggleVisibility'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+import { useReducer } from 'react'
+import notificationReducer from './reducers/notificationReducer'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState('')
-  const [error, setError] = useState('false')
+
+  const [notification, dispatch] = useReducer(notificationReducer, {
+    message: '',
+    isError: false,
+  })
 
   const createBlogFormRef = useRef()
 
@@ -34,10 +41,9 @@ const App = () => {
   }
 
   const showNotification = (message, isError = false) => {
-    setError(isError)
-    setMessage(message)
+    dispatch({ type: 'setNotification', payload: { message, isError } })
     setTimeout(() => {
-      setMessage('')
+      dispatch({ type: 'clearNotification' })
     }, 5000)
   }
 
@@ -108,7 +114,12 @@ const App = () => {
 
   return (
     <div>
-      {message && <Notification message={message} error={error} />}
+      {notification.message && (
+        <Notification
+          message={notification.message}
+          error={notification.isError}
+        />
+      )}
 
       {user === null ? (
         <Login login={loginHandler} />
