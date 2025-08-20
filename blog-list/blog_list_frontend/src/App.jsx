@@ -54,6 +54,7 @@ const App = () => {
   const toggleVisibility = () => {
     createBlogFormRef.current.toggleVisibility()
   }
+
   const updateLikes = async (id) => {
     try {
       const blog = blogs.find((blog) => blog.id === id)
@@ -105,7 +106,6 @@ const App = () => {
         </div>
       )}
       <Blogs
-        updateLikes={updateLikes}
         deleteBlog={deleteBlog}
         userLoggedId={user?.id}
       />

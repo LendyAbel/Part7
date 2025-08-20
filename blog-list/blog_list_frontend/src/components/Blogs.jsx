@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import Blog from './Blog'
 
-const Blogs = ({  updateLikes, deleteBlog, userLoggedId }) => {
+const Blogs = ({   deleteBlog, userLoggedId }) => {
   const blogs = useSelector((state) => state.blogs)
   const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
 
@@ -12,7 +12,6 @@ const Blogs = ({  updateLikes, deleteBlog, userLoggedId }) => {
         <Blog
           key={blog.id}
           blog={blog}
-          updateLikes={updateLikes}
           deleteBlog={deleteBlog}
           userLoggedId={userLoggedId}
         />

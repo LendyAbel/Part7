@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { updateLikes } from '../reducers/blogsReducer'
 
-const Blog = ({ blog, updateLikes, deleteBlog, userLoggedId }) => {
+const Blog = ({ blog, deleteBlog, userLoggedId }) => {
   const [visible, setVisible] = useState(false)
+  const dispatch = useDispatch()
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -42,7 +45,10 @@ const Blog = ({ blog, updateLikes, deleteBlog, userLoggedId }) => {
           <p id="urlInfo">URL: {blog.url}</p>
           <p id="likesInfo">
             likes: {blog.likes}{' '}
-            <button onClick={() => updateLikes(blog.id)} id="likeButton">
+            <button
+              onClick={() => dispatch(updateLikes(blog.id))}
+              id="likeButton"
+            >
               like
             </button>
           </p>
