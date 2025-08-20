@@ -10,9 +10,9 @@ import loginService from './services/login'
 import { useDispatch } from 'react-redux'
 import { showNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogsReducer'
+import { setSignedUser } from './reducers/userSignedReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
 
   const dispatch = useDispatch()
@@ -28,9 +28,10 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
+      dispatch(setSignedUser(user))
       blogService.setToken(user.token)
     }
-  }, [])
+  }, [dispatch])
 
   const loginHandler = async ({ username, password }) => {
     try {
@@ -54,17 +55,6 @@ const App = () => {
   const toggleVisibility = () => {
     createBlogFormRef.current.toggleVisibility()
   }
-
-  // const deleteBlog = async (id) => {
-  //   try {
-  //     await blogService.deleteBlog(id)
-  //     setBlogs(blogs.filter((blog) => blog.id !== id))
-  //     showNotification('Blog deleted')
-  //     console.log(`BLOG WITH ID: ${id} DELETED`)
-  //   } catch (error) {
-  //     console.log(error.response.data.error)
-  //   }
-  // }
 
   return (
     <div>
