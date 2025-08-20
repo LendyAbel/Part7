@@ -23,7 +23,7 @@ export const blogsReducer = createSlice({
   },
 })
 
-export const { setBlogs, addBlog } = blogsReducer.actions
+export const { setBlogs, addBlog, updateBlog } = blogsReducer.actions
 
 export const initializeBlogs = () => {
   return async (dispatch) => {
@@ -52,17 +52,11 @@ export const createNewBlog = (blog) => {
 export const updateLikes = (id) => {
   return async (dispatch, getState) => {
     try {
-      console.log('id', id)
+      const blog = getState().blogs.find((blog) => blog.id === id)
+      const updatedBlog = { ...blog, user: blog.user.id, likes: blog.likes + 1 }
 
-      const blogs = getState().blogs
-      const blog = blogs.find((blog) => blog.id === id)
-      console.log(blog)
-
-      const updateBlog = { ...blog, likes: blog.likes + 1 }
-      console.log(updateBlog)
-
-      const returnedBlog = await blogService.updateBlog(updateBlog.id, updateBlog)
-      dispatch(updateBlog(returnedBlog))
+      const returnedBlog = await blogService.updateBlog(id, updatedBlog)
+      dispatch(updateBlog({ ...returnedBlog, user: blog.user }))
     } catch (error) {
       console.log('ERROR: ', error)
     }
