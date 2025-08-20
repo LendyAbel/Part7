@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 
 import Notification from './components/Notification'
 import Blogs from './components/Blogs'
@@ -8,17 +8,13 @@ import ToggleVisibility from './components/ToggleVisibility'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
-import { useReducer } from 'react'
-import notificationReducer from './reducers/notificationReducer'
+import { NotificationContext } from './context/NotificationContext'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
 
-  const [notification, dispatch] = useReducer(notificationReducer, {
-    message: '',
-    isError: false,
-  })
+  const { notification, showNotification } = useContext(NotificationContext)
 
   const createBlogFormRef = useRef()
 
@@ -38,13 +34,6 @@ const App = () => {
   const getBlogs = async () => {
     const blogs = await blogService.getAll()
     setBlogs(blogs)
-  }
-
-  const showNotification = (message, isError = false) => {
-    dispatch({ type: 'setNotification', payload: { message, isError } })
-    setTimeout(() => {
-      dispatch({ type: 'clearNotification' })
-    }, 5000)
   }
 
   const loginHandler = async ({ username, password }) => {
@@ -114,12 +103,7 @@ const App = () => {
 
   return (
     <div>
-      {notification.message && (
-        <Notification
-          message={notification.message}
-          error={notification.isError}
-        />
-      )}
+      {notification.message && <Notification />}
 
       {user === null ? (
         <Login login={loginHandler} />
