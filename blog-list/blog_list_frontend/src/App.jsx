@@ -45,20 +45,6 @@ const App = () => {
     showNotification('Logout sucefully')
   }
 
-  const addBlog = async (newBlog) => {
-    try {
-      const returnedBlog = await blogService.createBlog(newBlog)
-      setBlogs(blogs.concat(returnedBlog))
-      createBlogFormRef.current.toggleVisibility()
-      showNotification(
-        `New blog added: ${returnedBlog.title} ${returnedBlog.author}`
-      )
-    } catch (error) {
-      console.log(error)
-      showNotification('Blog could not be added', true)
-    }
-  }
-
   const updateLikes = async (id) => {
     try {
       const blog = blogs.find((blog) => blog.id === id)
@@ -106,7 +92,7 @@ const App = () => {
             buttonLabel="Create new blog"
             ref={createBlogFormRef}
           >
-            <Post addBlog={addBlog} />
+            <Post createBlogFormRef={createBlogFormRef} />
           </ToggleVisibility>
         </div>
       )}

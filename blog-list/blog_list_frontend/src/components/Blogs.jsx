@@ -8,7 +8,6 @@ const Blogs = ({ updateLikes, deleteBlog, userLoggedId }) => {
     queryFn: blogService.getAll,
     retry: false,
   })
-  console.log('result.data', result.data)
 
   const sortedBlogs = result.data?.sort((a, b) => b.likes - a.likes)
 
