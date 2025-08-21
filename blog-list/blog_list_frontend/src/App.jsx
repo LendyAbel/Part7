@@ -11,7 +11,6 @@ import loginService from './services/login'
 import { NotificationContext } from './context/NotificationContext'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const { notification, showNotification } = useContext(NotificationContext)
   const createBlogFormRef = useRef()
@@ -45,17 +44,6 @@ const App = () => {
     showNotification('Logout sucefully')
   }
 
-  const deleteBlog = async (id) => {
-    try {
-      await blogService.deleteBlog(id)
-      setBlogs(blogs.filter((blog) => blog.id !== id))
-      showNotification('Blog deleted')
-      console.log(`BLOG WITH ID: ${id} DELETED`)
-    } catch (error) {
-      console.log(error.response.data.error)
-    }
-  }
-
   return (
     <div>
       {notification.message && <Notification />}
@@ -76,7 +64,7 @@ const App = () => {
           </ToggleVisibility>
         </div>
       )}
-      <Blogs deleteBlog={deleteBlog} userLoggedId={user?.id} />
+      <Blogs userLoggedId={user?.id} />
     </div>
   )
 }
