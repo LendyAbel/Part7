@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import Blog from './Blog'
 import blogService from '../services/blogs'
 
-const Blogs = ({ updateLikes, deleteBlog, userLoggedId }) => {
+const Blogs = ({ deleteBlog, userLoggedId }) => {
   const result = useQuery({
     queryKey: ['blogs'],
     queryFn: blogService.getAll,
@@ -18,7 +18,6 @@ const Blogs = ({ updateLikes, deleteBlog, userLoggedId }) => {
         <Blog
           key={blog.id}
           blog={blog}
-          updateLikes={updateLikes}
           deleteBlog={deleteBlog}
           userLoggedId={userLoggedId}
         />

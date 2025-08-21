@@ -1,7 +1,25 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
+import blogService from '../services/blogs'
 
-const Blog = ({ blog, updateLikes, deleteBlog, userLoggedId }) => {
+const Blog = ({ blog, deleteBlog, userLoggedId }) => {
   const [visible, setVisible] = useState(false)
+  const queryClient = useQueryClient()
+
+  const updateLikesMutation = useMutation({
+    mutationFn: ({ id, updatedBlog }) => blogService.updateBlog(id, updatedBlog),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['blogs'])
+    },
+    onError: (error) => {
+      console.log('ERROR: ', error)
+    },
+  })
+
+  const updateLikes = () => {
+    const updatedBlog = { ...blog, user: blog.user.id, likes: blog.likes + 1 }
+    updateLikesMutation.mutate({ id: blog.id, updatedBlog })
+  }
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -42,7 +60,7 @@ const Blog = ({ blog, updateLikes, deleteBlog, userLoggedId }) => {
           <p id="urlInfo">URL: {blog.url}</p>
           <p id="likesInfo">
             likes: {blog.likes}{' '}
-            <button onClick={() => updateLikes(blog.id)} id="likeButton">
+            <button onClick={updateLikes} id="likeButton">
               like
             </button>
           </p>
