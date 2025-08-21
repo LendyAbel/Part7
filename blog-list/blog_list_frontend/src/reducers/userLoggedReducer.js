@@ -1,11 +1,11 @@
-const userLoggedReducer = (state, action) => {
+const userLoggedReducer = (state = null, action) => {
   const { type, payload } = action
 
   switch (type) {
     case 'setUserLogged':
       return payload
-    case 'clearNotification':
-      return {}
+    case 'clearUserLogged':
+      return null
     default:
       return state
   }

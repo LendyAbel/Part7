@@ -1,9 +1,10 @@
 import ReactDOM from 'react-dom/client'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+import NotificationProvider from './context/NotificationContext'
+import UserLoggedProvider from './context/UserLoggedContext'
 import App from './App'
 import './index.css'
-import NotificationProvider from './context/NotificationContext'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import UserLoggedProvider from './context/UserLoggedContext'
 
 const queryClient = new QueryClient()
 

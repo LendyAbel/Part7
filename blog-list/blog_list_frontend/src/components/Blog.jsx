@@ -1,13 +1,16 @@
+import { useContext, useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { UserLoggedContext } from '../context/UserLoggedContext'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, userLoggedId }) => {
+const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
+  const { user } = useContext(UserLoggedContext)
   const queryClient = useQueryClient()
 
   const updateLikesMutation = useMutation({
-    mutationFn: ({ id, updatedBlog }) => blogService.updateBlog(id, updatedBlog),
+    mutationFn: ({ id, updatedBlog }) =>
+      blogService.updateBlog(id, updatedBlog),
     onSuccess: () => {
       queryClient.invalidateQueries(['blogs'])
     },
@@ -20,7 +23,7 @@ const Blog = ({ blog, userLoggedId }) => {
     mutationFn: blogService.deleteBlog,
     onSuccess: () => {
       queryClient.invalidateQueries(['blogs'])
-    }
+    },
   })
 
   const updateLikes = () => {
@@ -72,7 +75,7 @@ const Blog = ({ blog, userLoggedId }) => {
             </button>
           </p>
           <p>{blog.user.name}</p>
-          {userLoggedId === blog.user || blog.user.id ? (
+          {user && user?.id === blog.user.id ? (
             <button style={removeButtonStyle} onClick={handleRemove}>
               remove
             </button>
