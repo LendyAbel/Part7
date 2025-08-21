@@ -18,7 +18,6 @@ const Blogs = ({ deleteBlog, userLoggedId }) => {
         <Blog
           key={blog.id}
           blog={blog}
-          deleteBlog={deleteBlog}
           userLoggedId={userLoggedId}
         />
       ))}
