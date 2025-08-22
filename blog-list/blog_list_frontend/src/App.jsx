@@ -11,10 +11,11 @@ import Login from './components/Login'
 import UsersView from './components/UsersView'
 import UserView from './components/UserView'
 import BlogView from './components/BlogView'
+import NavBar from './components/NavBar'
 
 const App = () => {
-  const { notification, showNotification } = useContext(NotificationContext)
-  const { user, userDispatch } = useContext(UserLoggedContext)
+  const { notification } = useContext(NotificationContext)
+  const { userDispatch } = useContext(UserLoggedContext)
   const [users, setUsers] = useState([])
 
   const userMatch = useMatch('/users/:id')
@@ -40,23 +41,10 @@ const App = () => {
     }
   }, [userDispatch])
 
-  const logoutHandler = () => {
-    userDispatch({ type: 'clearUserLogged' })
-    window.localStorage.removeItem('loggedBlogsappUser')
-    showNotification('Logout sucefully')
-  }
-
   return (
     <div>
+      <NavBar />
       {notification.message && <Notification />}
-      {!user ? (
-        <Login />
-      ) : (
-        <div>
-          <p>{user.name} logged-in</p>
-          <button onClick={logoutHandler}>Logout</button>
-        </div>
-      )}
       <Routes>
         <Route path="/" element={<BlogsView />} />
         <Route path="/blogs/:id" element={<BlogView />} />
