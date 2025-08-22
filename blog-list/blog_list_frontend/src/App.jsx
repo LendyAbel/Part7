@@ -1,4 +1,4 @@
-import { useEffect, useRef, useContext, useState } from 'react'
+import { useEffect, useContext, useState } from 'react'
 import { NotificationContext } from './context/NotificationContext'
 import { UserLoggedContext } from './context/UserLoggedContext'
 import { Routes, Route, useMatch } from 'react-router'
@@ -7,7 +7,6 @@ import userService from './services/users'
 
 import Notification from './components/Notification'
 import BlogsView from './components/BlogsView'
-import Login from './components/Login'
 import UsersView from './components/UsersView'
 import UserView from './components/UserView'
 import BlogView from './components/BlogView'

@@ -8,18 +8,13 @@ const BlogView = () => {
   const { user } = useContext(UserLoggedContext)
   const queryClient = useQueryClient()
   const navigate = useNavigate()
+  const blogMatch = useMatch('/blogs/:id')
 
   const result = useQuery({
     queryKey: ['blogs'],
     queryFn: blogService.getAll,
     retry: false,
   })
-  const blogs = result.data
-
-  const blogMatch = useMatch('/blogs/:id')
-  const blogLinked = blogMatch
-    ? blogs.find((blog) => blog.id === blogMatch.params.id)
-    : null
 
   const updateLikesMutation = useMutation({
     mutationFn: ({ id, updatedBlog }) =>
@@ -38,6 +33,15 @@ const BlogView = () => {
       queryClient.invalidateQueries(['blogs'])
     },
   })
+
+  if (result.isLoading) {
+    return <div>...is Loading</div>
+  }
+  const blogs = result.data
+
+  const blogLinked = blogMatch
+    ? blogs.find((blog) => blog.id === blogMatch.params.id)
+    : null
 
   const updateLikes = () => {
     const updatedBlog = {
@@ -89,6 +93,14 @@ const BlogView = () => {
           </button>
         </p>
         <p>{blogLinked.user.name}</p>
+        <div>
+          <p>Comments:</p>
+          <ul>
+            {blogLinked.comments.map((comment, index) => (
+              <li key={index}>{comment}</li>
+            ))}
+          </ul>
+        </div>
         {user && user?.id === blogLinked.user.id ? (
           <button style={removeButtonStyle} onClick={handleRemove}>
             remove
