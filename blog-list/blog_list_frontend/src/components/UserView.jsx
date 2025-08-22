@@ -1,6 +1,4 @@
-
-const User = ({ user }) => {
-
+const UserView = ({ user }) => {
   if (!user) {
     return <div></div>
   }
@@ -18,4 +16,4 @@ const User = ({ user }) => {
   )
 }
 
-export default User
+export default UserView

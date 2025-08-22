@@ -1,13 +1,13 @@
+import { useContext, useRef } from 'react'
+import { Link } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
+import { UserLoggedContext } from '../context/UserLoggedContext'
 import blogService from '../services/blogs'
 
-import Blog from './Blog'
 import ToggleVisibility from './ToggleVisibility'
 import Post from './Post'
-import { useContext, useRef } from 'react'
-import { UserLoggedContext } from '../context/UserLoggedContext'
 
-const Blogs = () => {
+const BlogsView = () => {
   const createBlogFormRef = useRef()
   const { user } = useContext(UserLoggedContext)
 
@@ -16,8 +16,15 @@ const Blogs = () => {
     queryFn: blogService.getAll,
     retry: false,
   })
+  const blogs = result.data
+  const sortedBlogs = blogs?.sort((a, b) => b.likes - a.likes)
 
-  const sortedBlogs = result.data?.sort((a, b) => b.likes - a.likes)
+  const blogStyle = {
+    padding: 5,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5,
+  }
 
   return (
     <div>
@@ -28,10 +35,14 @@ const Blogs = () => {
       )}
       <h2 className="subtitle">Blogs</h2>
       {sortedBlogs?.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <div key={blog.id} style={blogStyle}>
+            <Link to={`/blogs/${blog.id}`}>
+              Title: {blog.title} Author: {blog.author}
+            </Link>
+        </div>
       ))}
     </div>
   )
 }
 
-export default Blogs
+export default BlogsView

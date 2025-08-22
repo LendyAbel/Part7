@@ -6,19 +6,20 @@ import blogService from './services/blogs'
 import userService from './services/users'
 
 import Notification from './components/Notification'
-import Blogs from './components/Blogs'
+import BlogsView from './components/BlogsView'
 import Login from './components/Login'
-import Users from './components/Users'
-import User from './components/User'
+import UsersView from './components/UsersView'
+import UserView from './components/UserView'
+import BlogView from './components/BlogView'
 
 const App = () => {
   const { notification, showNotification } = useContext(NotificationContext)
   const { user, userDispatch } = useContext(UserLoggedContext)
   const [users, setUsers] = useState([])
 
-  const match = useMatch('/users/:id')
-  const userLinked = match
-    ? users.find((user) => user.id === match.params.id)
+  const userMatch = useMatch('/users/:id')
+  const userLinked = userMatch
+    ? users.find((user) => user.id === userMatch.params.id)
     : null
 
   useEffect(() => {
@@ -57,9 +58,10 @@ const App = () => {
         </div>
       )}
       <Routes>
-        <Route path="/" element={<Blogs />} />
-        <Route path="/users" element={<Users users={users} />} />
-        <Route path="/users/:id" element={<User user={userLinked} />} />
+        <Route path="/" element={<BlogsView />} />
+        <Route path="/blogs/:id" element={<BlogView />} />
+        <Route path="/users" element={<UsersView users={users} />} />
+        <Route path="/users/:id" element={<UserView user={userLinked} />} />
       </Routes>
     </div>
   )

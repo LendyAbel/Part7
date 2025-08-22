@@ -1,6 +1,6 @@
 import { Link } from 'react-router'
 
-const Users = ({ users }) => {
+const UsersView = ({ users }) => {
   return (
     <table>
       <thead>
@@ -23,4 +23,4 @@ const Users = ({ users }) => {
   )
 }
 
-export default Users
+export default UsersView
