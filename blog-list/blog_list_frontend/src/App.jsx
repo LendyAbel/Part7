@@ -7,14 +7,11 @@ import blogService from './services/blogs'
 import Notification from './components/Notification'
 import Blogs from './components/Blogs'
 import Login from './components/Login'
-import Post from './components/Post'
-import ToggleVisibility from './components/ToggleVisibility'
 import Users from './components/Users'
 
 const App = () => {
   const { notification, showNotification } = useContext(NotificationContext)
   const { user, userDispatch } = useContext(UserLoggedContext)
-  const createBlogFormRef = useRef()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogsappUser')
@@ -34,21 +31,12 @@ const App = () => {
   return (
     <div>
       {notification.message && <Notification />}
-
       {!user ? (
         <Login />
       ) : (
         <div>
-          <p>
-            {user.name} logged-in{' '}
-            <button onClick={logoutHandler}>Logout</button>
-          </p>
-          <ToggleVisibility
-            buttonLabel="Create new blog"
-            ref={createBlogFormRef}
-          >
-            <Post createBlogFormRef={createBlogFormRef} />
-          </ToggleVisibility>
+          <p>{user.name} logged-in</p>
+          <button onClick={logoutHandler}>Logout</button>
         </div>
       )}
       <Routes>
