@@ -1,7 +1,35 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { UserLoggedContext } from '../context/UserLoggedContext'
+import blogService from '../services/blogs'
 
-const Blog = ({ blog, updateLikes, deleteBlog, userLoggedId }) => {
+const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
+  const { user } = useContext(UserLoggedContext)
+  const queryClient = useQueryClient()
+
+  const updateLikesMutation = useMutation({
+    mutationFn: ({ id, updatedBlog }) =>
+      blogService.updateBlog(id, updatedBlog),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['blogs'])
+    },
+    onError: (error) => {
+      console.log('ERROR: ', error)
+    },
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: blogService.deleteBlog,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['blogs'])
+    },
+  })
+
+  const updateLikes = () => {
+    const updatedBlog = { ...blog, user: blog.user.id, likes: blog.likes + 1 }
+    updateLikesMutation.mutate({ id: blog.id, updatedBlog })
+  }
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -9,7 +37,7 @@ const Blog = ({ blog, updateLikes, deleteBlog, userLoggedId }) => {
 
   const handleRemove = () => {
     if (window.confirm(`Remove blog Name: ${blog.title} by ${blog.author}`)) {
-      deleteBlog(blog.id)
+      deleteMutation.mutate(blog.id)
     }
   }
 
@@ -42,12 +70,12 @@ const Blog = ({ blog, updateLikes, deleteBlog, userLoggedId }) => {
           <p id="urlInfo">URL: {blog.url}</p>
           <p id="likesInfo">
             likes: {blog.likes}{' '}
-            <button onClick={() => updateLikes(blog.id)} id="likeButton">
+            <button onClick={updateLikes} id="likeButton">
               like
             </button>
           </p>
           <p>{blog.user.name}</p>
-          {userLoggedId === blog.user || blog.user.id ? (
+          {user && user?.id === blog.user.id ? (
             <button style={removeButtonStyle} onClick={handleRemove}>
               remove
             </button>
