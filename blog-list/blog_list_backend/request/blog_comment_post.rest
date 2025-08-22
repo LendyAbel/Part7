@@ -1,0 +1,7 @@
+@noteId = 68344d32160bb88b3324a2d7
+POST http://localhost:3003/api/blogs/{{noteId}}/comments
+Content-Type: application/json
+
+{
+    "comment": "Me gusto mucho"
+}

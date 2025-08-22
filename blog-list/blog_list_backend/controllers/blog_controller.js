@@ -33,30 +33,22 @@ blogRouter.post('/', middleware.userExtractor, async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
-blogRouter.delete(
-  '/:id',
-  middleware.userExtractor,
-  async (request, response) => {
-    const user = request.user
-    const blog = await Blog.findById(request.params.id)
+blogRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
+  const user = request.user
+  const blog = await Blog.findById(request.params.id)
 
-    if (blog.user.toString() !== user.id.toString()) {
-      return response
-        .status(401)
-        .json({ error: 'only the creator can delete this blog' })
-    }
-
-    await blog.deleteOne()
-
-    user.blogs = user.blogs.filter(
-      blogId => blogId.toString() !== request.params.id
-    )
-    await user.save()
-
-    response.status(204).end()
-    console.log('DELETE done')
+  if (blog.user.toString() !== user.id.toString()) {
+    return response.status(401).json({ error: 'only the creator can delete this blog' })
   }
-)
+
+  await blog.deleteOne()
+
+  user.blogs = user.blogs.filter(blogId => blogId.toString() !== request.params.id)
+  await user.save()
+
+  response.status(204).end()
+  console.log('DELETE done')
+})
 
 blogRouter.put('/:id', async (request, response) => {
   const newBlog = request.body
@@ -67,6 +59,21 @@ blogRouter.put('/:id', async (request, response) => {
   response.status(200).json(updatedBlog)
 
   console.log('UPDATE done')
+})
+
+blogRouter.post('/:id/comments', async (request, response) => {
+  console.log('POST COMMENT reuqest received')
+  if (!request.body.comment) {
+    return response.status(400).end()
+  }
+  const comment = request.body.comment
+  const id = request.params.id
+
+  const blog = await Blog.findById(id)
+  const newBlog = { ...blog, comments: blog.comments.push(comment) }
+  const updatedBlog = await Blog.findByIdAndUpdate(id, newBlog, { new: true })
+  response.status(201).json(updatedBlog)
+  console.log('COMMENT postted')
 })
 
 module.exports = blogRouter
