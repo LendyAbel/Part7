@@ -1,10 +1,11 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { UserLoggedContext } from '../context/UserLoggedContext'
 import blogService from '../services/blogs'
 import { useMatch, useNavigate } from 'react-router'
 
 const BlogView = () => {
+  const [comment, setComment] = useState('')
   const { user } = useContext(UserLoggedContext)
   const queryClient = useQueryClient()
   const navigate = useNavigate()
@@ -34,6 +35,11 @@ const BlogView = () => {
     },
   })
 
+  const commentMutation = useMutation({
+    mutationFn: ({ id, comment }) => blogService.addComment(id, comment),
+    onSuccess: () => queryClient.invalidateQueries(['blogs']),
+  })
+
   if (result.isLoading) {
     return <div>...is Loading</div>
   }
@@ -61,6 +67,12 @@ const BlogView = () => {
       deleteMutation.mutate(blogLinked.id)
       navigate('/')
     }
+  }
+
+  const handleAddComment = (e) => {
+    e.preventDefault()
+    commentMutation.mutate({ id: blogLinked.id, comment })
+    setComment('')
   }
 
   const blogStyle = {
@@ -94,6 +106,12 @@ const BlogView = () => {
         </p>
         <p>{blogLinked.user.name}</p>
         <div>
+          {user && (
+            <form onSubmit={handleAddComment}>
+              <input type="text" onChange={(e) => setComment(e.target.value)} />
+              <button type="submit">add comment</button>
+            </form>
+          )}
           <p>Comments:</p>
           <ul>
             {blogLinked.comments.map((comment, index) => (
