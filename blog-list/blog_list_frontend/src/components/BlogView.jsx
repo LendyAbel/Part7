@@ -3,6 +3,19 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { UserLoggedContext } from '../context/UserLoggedContext'
 import blogService from '../services/blogs'
 import { useMatch, useNavigate } from 'react-router'
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material'
+import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 
 const BlogView = () => {
   const [comment, setComment] = useState('')
@@ -75,59 +88,118 @@ const BlogView = () => {
     setComment('')
   }
 
-  const blogStyle = {
-    paddingTop: 2,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
-  const removeButtonStyle = {
-    border: '3px solid red',
-    backgroundColor: '#ff9191',
-    borderRadius: '10px',
-    marginBottom: 5,
-  }
-
   return (
-    <div style={blogStyle}>
-      <div className="defalutContainer">
-        <p id="defaultInfo">
-          Title: {blogLinked.title} Author: {blogLinked.author}{' '}
-        </p>
-      </div>
-      <div className="moreInfoContainer">
-        <p id="urlInfo">URL: {blogLinked.url}</p>
-        <p id="likesInfo">
-          likes: {blogLinked.likes}{' '}
-          <button onClick={updateLikes} id="likeButton">
-            like
-          </button>
-        </p>
-        <p>{blogLinked.user.name}</p>
-        <div>
+    <BlogUI
+      blog={blogLinked}
+      updateLikes={updateLikes}
+      handleRemove={handleRemove}
+      user={user}
+      handleAddComment={handleAddComment}
+      setComment={setComment}
+      comment={comment}
+    />
+  )
+}
+
+const BlogUI = ({
+  blog,
+  updateLikes,
+  handleRemove,
+  user,
+  handleAddComment,
+  comment,
+  setComment,
+}) => {
+  return (
+    <Card variant="outlined" sx={{ minWidth: 500, padding: 2, marginTop: 2 }}>
+      <CardContent>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Stack direction={'row'} spacing={2} alignItems="center">
+            <Typography
+              gutterBottom
+              sx={{ color: 'text.primary', fontSize: 26 }}
+            >
+              {blog.title} by {blog.author}
+            </Typography>
+            <IconButton
+              size="small"
+              onClick={updateLikes}
+              id="likeButton"
+              sx={{ color: 'blue' }}
+            >
+              <ThumbUpIcon /> {blog.likes}
+            </IconButton>
+          </Stack>
+          {user && user?.id === blog.user.id ? (
+            <IconButton
+              sx={{ backgroundColor: '#ff9191', borderRadius: '10px' }}
+              size="small"
+              onClick={handleRemove}
+              id="likeButton"
+              color="inherit"
+            >
+              <DeleteForeverIcon />
+            </IconButton>
+          ) : null}
+        </Box>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+          <a
+            target="_blank"
+            href={`${blog.url}`}
+            rel="noopenner noreferrer"
+            id="urlInfo"
+          >
+            URL: {blog.url}
+          </a>
+        </Typography>
+
+        <Typography variant="body2" color="text.secondary">
+          Publisher: {blog.user.name}
+        </Typography>
+      </CardContent>
+
+      <CardActions>
+        <Box sx={{ width: '100%' }}>
           {user && (
             <form onSubmit={handleAddComment}>
-              <input type="text" onChange={(e) => setComment(e.target.value)} />
-              <button type="submit">add comment</button>
+              <Stack
+                direction={'row'}
+                spacing={2}
+                alignItems="center"
+                sx={{ mb: 2 }}
+              >
+                <TextField
+                  size="small"
+                  label="comment"
+                  name="comment"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                />
+                <Button variant="contained" type="submit">
+                  add comment
+                </Button>
+              </Stack>
             </form>
           )}
-          <p>Comments:</p>
-          <ul>
-            {blogLinked.comments.map((comment, index) => (
-              <li key={index}>{comment}</li>
+
+          <Typography variant="h6" sx={{ mb: 1 }}>
+            Comments:
+          </Typography>
+          <Box component="ul" sx={{ pl: 2 }}>
+            {blog.comments.map((comment, index) => (
+              <Typography
+                component="li"
+                key={index}
+                variant="body2"
+                sx={{ mb: 0.5 }}
+              >
+                {comment}
+              </Typography>
             ))}
-          </ul>
-        </div>
-        {user && user?.id === blogLinked.user.id ? (
-          <button style={removeButtonStyle} onClick={handleRemove}>
-            remove
-          </button>
-        ) : (
-          ''
-        )}
-      </div>
-    </div>
+          </Box>
+        </Box>
+      </CardActions>
+    </Card>
   )
 }
 

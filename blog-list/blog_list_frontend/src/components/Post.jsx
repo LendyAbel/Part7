@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useContext, useState } from 'react'
 import blogService from '../services/blogs'
 import { NotificationContext } from '../context/NotificationContext'
+import { Button, Stack, TextField } from '@mui/material'
 
 const Post = ({ createBlogFormRef }) => {
   const [title, setTitle] = useState('')
@@ -53,41 +54,58 @@ const Post = ({ createBlogFormRef }) => {
   }
 
   return (
+    <PostUI
+      postNewBlogHandler={postNewBlogHandler}
+      title={title}
+      author={author}
+      url={url}
+      handlerTitleChange={handlerTitleChange}
+      handlerAuthorChange={handlerAuthorChange}
+      handlerUrlChange={handlerUrlChange}
+    />
+  )
+}
+
+const PostUI = ({
+  postNewBlogHandler,
+  title,
+  handlerTitleChange,
+  author,
+  handlerAuthorChange,
+  url,
+  handlerUrlChange,
+}) => {
+  return (
     <div>
       <h2 className="subtitle">Create new blog</h2>
       <form onSubmit={postNewBlogHandler}>
-        <div>
-          Title:{' '}
-          <input
-            id="titleInput"
-            type="text"
-            name="title"
+        <Stack direction="column" spacing={2} sx={{ width: '400px', mb: 2 }}>
+          <TextField
+            label="Title"
+            name="Title"
+            size="small"
             value={title}
             onChange={handlerTitleChange}
           />
-        </div>
-        <div>
-          Author:{' '}
-          <input
-            id="authorInput"
-            type="text"
-            name="author"
+          <TextField
+            label="Author"
+            name="Author"
+            size="small"
             value={author}
             onChange={handlerAuthorChange}
           />
-        </div>
-        <div>
-          Url:{' '}
-          <input
-            id="urlInput"
-            type="text"
-            name="url"
+          <TextField
+            label="Url"
+            name="Url"
+            size="small"
             value={url}
             onChange={handlerUrlChange}
           />
-        </div>
+        </Stack>
 
-        <button type="submit">Create</button>
+        <Button variant="contained" type="submit">
+          create
+        </Button>
       </form>
     </div>
   )

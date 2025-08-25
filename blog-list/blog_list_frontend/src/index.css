@@ -23,7 +23,15 @@
   text-decoration: underline;
 }
 
-spam {
+.blogLink {
+  text-decoration: none;
+  color: black;
+}
+.blogLink:hover {
+  text-decoration: underline;
+}
+
+span {
   font-size: large;
 }
 

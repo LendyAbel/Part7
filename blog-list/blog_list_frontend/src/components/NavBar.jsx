@@ -30,7 +30,7 @@ const NavBarUI = ({ user, logoutHandler }) => {
     <Box>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
             <Stack direction={'row'} spacing={4}>
               <Link className="appLink" to={'/'}>
                 blogs
@@ -42,19 +42,16 @@ const NavBarUI = ({ user, logoutHandler }) => {
           </Typography>
           {user && (
             <div>
-              <spam>
-                {user.name} logged in{' '}
+              <span>
+                {user.name}{' '}
                 <IconButton
                   size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
                   onClick={logoutHandler}
                   color="inherit"
                 >
                   <LogoutIcon />
                 </IconButton>
-              </spam>
+              </span>
             </div>
           )}
         </Toolbar>
