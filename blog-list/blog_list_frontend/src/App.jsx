@@ -11,10 +11,11 @@ import UsersView from './components/UsersView'
 import UserView from './components/UserView'
 import BlogView from './components/BlogView'
 import NavBar from './components/NavBar'
+import Login from './components/Login'
 
 const App = () => {
   const { notification } = useContext(NotificationContext)
-  const { userDispatch } = useContext(UserLoggedContext)
+  const { user, userDispatch } = useContext(UserLoggedContext)
   const [users, setUsers] = useState([])
 
   const userMatch = useMatch('/users/:id')
@@ -43,7 +44,10 @@ const App = () => {
   return (
     <div>
       <NavBar />
-      {notification.message && <Notification />}
+      <div className="notificationArea">
+        {notification.message && <Notification />}
+      </div>
+      {!user && <Login />}
       <Routes>
         <Route path="/" element={<BlogsView />} />
         <Route path="/blogs/:id" element={<BlogView />} />

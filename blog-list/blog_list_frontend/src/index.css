@@ -1,6 +1,6 @@
 .subtitle {
   color: blue;
-  font-size: 30px;
+  font-size: 26px;
 }
 
 .message {
@@ -10,14 +10,29 @@
   background-color: bisque;
 }
 
-.info {
-  color: green;
-  border-color: green;
+.notificationArea {
+  margin-top: 10px;
+  height: 40px;
 }
 
-.error {
-  color: red;
-  border-color: red;
+.appLink {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}
+.appLink:hover {
+  text-decoration: underline;
+}
+
+spam {
+  font-size: large;
+}
+
+.loginForm {
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center ;
+  gap: 10px
 }
 
 

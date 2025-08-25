@@ -4,6 +4,9 @@ import { NotificationContext } from '../context/NotificationContext'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -31,31 +34,48 @@ const Login = () => {
   }
 
   return (
-    <form onSubmit={loginHandler}>
-      <h2 className="subtitle">Login</h2>
-      <div>
-        username:{' '}
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={(e) => {
-            setUsername(e.target.value)
-          }}
-        />
-      </div>
-      <div>
-        password:{' '}
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={(e) => {
-            setPassword(e.target.value)
-          }}
-        />
-      </div>
-      <button type="submit">login</button>
+    <LoginUI
+      loginHandler={loginHandler}
+      username={username}
+      setUsername={setUsername}
+      password={password}
+      setPassword={setPassword}
+    />
+  )
+}
+
+const LoginUI = ({
+  loginHandler,
+  username,
+  setUsername,
+  password,
+  setPassword,
+}) => {
+  return (
+    <form className="loginForm" onSubmit={loginHandler}>
+      <h2 className="subtitle">Login:</h2>
+      <TextField
+        size="small"
+        label="username"
+        value={username}
+        name="Username"
+        onChange={(e) => {
+          setUsername(e.target.value)
+        }}
+      />
+      <TextField
+        size="small"
+        label="password"
+        value={password}
+        name="Password"
+        type='password'
+        onChange={(e) => {
+          setPassword(e.target.value)
+        }}
+      />
+      <Button variant="contained" type="submit">
+        Login
+      </Button>
     </form>
   )
 }
